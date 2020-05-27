@@ -19,7 +19,9 @@ const SimpleDemo = () => {
     event.preventDefault();
     const clientX = event.clientX;
     const clientY = event.clientY;
+    const { width, height } = event.target.getBoundingClientRect();
     origin.current = { x: clientX, y: clientY };
+    setState({ width, height });
     bindEvents();
   };
 
@@ -51,7 +53,7 @@ const SimpleDemo = () => {
         onMouseDown={onMouseDown}
         style={{ border: "1px solid red", ...style }}
       >
-        <h3>我是红色的盒子，点我拖动改变大小</h3>
+        <h3>我是红色的盒子，点我拖动变大</h3>
       </div>
     </div>
   );
