@@ -6,27 +6,35 @@ import "antd/dist/antd.css";
 import "./index.css";
 
 const App = () => {
-  const style = { width: 250, height: 100, border: "1px solid red" };
+  const [style, setStyle] = React.useState({
+    width: 250,
+    height: 100,
+    textAlign: "center"
+  });
 
   const [editshapeStyle, setEditshapeStyle] = React.useState({});
   React.useEffect(() => {
     const activeNode = document.getElementById("box");
     if (activeNode) {
-      const rect = activeNode.getBoundingClientRect();
       const editshapeStyle = {
         position: "absolute",
         width: activeNode.style.width,
         height: activeNode.style.height,
-        left: rect.left + "px",
-        top: rect.top + "px"
+        left: activeNode.offsetLeft + "px",
+        top: activeNode.offsetTop + "px"
       };
-      console.log(editshapeStyle, "editshapeStyle");
       setEditshapeStyle(editshapeStyle);
     }
   }, []);
 
+  const handleStyle = nextStyle => {
+    setStyle({ ...style, ...nextStyle });
+
+    setEditshapeStyle({ ...editshapeStyle, ...nextStyle });
+  };
+
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative" }} id="painting-main">
       {/* <h1>最简单的拖拽改变盒子大小</h1>
       <SimpleDemo /> */}
       <br />
@@ -36,7 +44,7 @@ const App = () => {
       <div id="box" style={style}>
         我是那个要改变style的盒子
       </div>
-      <Editshape style={editshapeStyle} />
+      <Editshape style={editshapeStyle} handleStyle={handleStyle} />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import Point from "./Point";
 import "antd/dist/antd.css";
+import _ from "lodash";
 
 const SimpleDemo = props => {
   // 每个坐标的id
@@ -28,9 +29,6 @@ const SimpleDemo = props => {
 
   const ref = React.useRef(null);
   const stateRef = React.useRef({});
-
-  const [style, setState] = React.useState({ width: 250, height: 120 });
-  const origin = React.useRef(null);
 
   const onMouseMove = moveEvent => {
     const point = ref.current.pointId;
@@ -78,18 +76,9 @@ const SimpleDemo = props => {
       paiting.style.cursor = directionKey[point];
     }
     stateRef.current = style;
-    // updateStyle({ style: stateRef.current, id: activeId })
+    props.handleStyle(stateRef.current);
   };
   const onMouseDown = (event, pointId) => {
-    event.stopPropagation();
-    event.preventDefault();
-    const clientX = event.clientX;
-    const clientY = event.clientY;
-    const { width, height } = event.target.getBoundingClientRect();
-    origin.current = { x: clientX, y: clientY };
-    setState({ width, height });
-    bindEvents();
-
     let downEvent = event;
     downEvent.stopPropagation();
     downEvent.preventDefault();
@@ -127,8 +116,8 @@ const SimpleDemo = props => {
     if (paiting) {
       paiting.style.cursor = "default";
     }
-    // stateRef.current = _.omit(stateRef.current, ["cursor"]);
-    // updateStyle({ style: { ...stateRef.current }, id: activeId })
+    stateRef.current = _.omit(stateRef.current, ["cursor"]);
+    props.handleStyle(stateRef.current);
     stateRef.current = {};
     ref.current = {};
     // 解除绑定
@@ -153,7 +142,7 @@ const SimpleDemo = props => {
   }, []);
 
   return (
-    <>
+    <div style={props.style}>
       {pointList.map((item, idx) => (
         <Point
           key={idx}
@@ -162,7 +151,7 @@ const SimpleDemo = props => {
           directionKey={directionKey}
         />
       ))}
-    </>
+    </div>
   );
 };
 
