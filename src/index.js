@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-// import SimpleDemo from "./SimpleDemo";
+import SimpleDemo from "./SimpleDemo";
 import Editshape from "./Editshape";
 import "antd/dist/antd.css";
 import "./index.css";
